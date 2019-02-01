@@ -1,0 +1,16 @@
+HTTP/1.1 201
+status: 201
+Server: nginx/1.15.6
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Fri, 01 Feb 2019 08:06:12 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+Set-Cookie: emailer_session=fFJjbakmjbLYtIeHstvPlRA0VlzhKmhjMgfmpClK; expires=Fri, 01-Feb-2019 10:06:12 GMT; Max-Age=7200; path=/; secure; httponly
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+
+{"data":{"id":7,"address":null,"city":null,"state":null,"zip":null,"website":null,"country":null,"timezone":"Europe\/Kiev","phone":null,"first_name":"First Name","last_name":"Last Name","company":null,"email":"test@example.com","recipient":"First Name Last Name","unsubscribed":false,"count_letters":null,"created_at":"Feb 01, 2019","last_update":"Feb 01, 2019","unsubscribe_reason":null,"unsubscribe_note":null,"user":{"id":1,"role":"admin","email":"admin@tenantcloud.com","name":"admin"}}}
