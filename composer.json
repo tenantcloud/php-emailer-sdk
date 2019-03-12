@@ -1,7 +1,13 @@
 {
     "name": "tenantcloud/emailer",
-    "description": ":description",
-    "license": "license",
+    "description": "Laravel package for sending emails",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yaroslav Nahirnuj",
+            "email": "y.nahirnyi@tenantcloud.com"
+        }
+    ],
     "homepage": "https://github.com/tenantcloud/emailer",
     "keywords": ["Laravel", "Emailer", "mailer"],
     "require": {
