@@ -61,6 +61,15 @@ class EmailerClient
 	}
 
 	/**
+	 * @return mixed
+	 * @throws Exception
+	 */
+	public function contact()
+	{
+		return $this->makeApi('contact');
+	}
+
+	/**
 	 * @param string $name
 	 * @return mixed
 	 * @throws Exception
@@ -117,13 +126,16 @@ class EmailerClient
 
 	/**
 	 * @param string $url
+	 * @param array $data
 	 * @return Response
 	 * @throws Exception
 	 */
-	public function destroy(string $url): Response
+	public function destroy(string $url, array $data = []): Response
 	{
 		try {
-			$response = $this->client->delete($url);
+			$response = $this->client->delete($url, [
+				'form_params' => $data,
+			]);
 		} catch (Exception $e) {
 			$response = $e->getResponse();
 		}
