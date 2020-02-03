@@ -15,7 +15,7 @@ class ListsTest extends TestCase
 	/**
 	 * @var string
 	 */
-	private $mockUrl = '../Mock/Lists/';
+	private $mockUrl = 'tests/Mock/Lists/';
 
 	public function testStoreSuccess()
 	{
