@@ -11,13 +11,13 @@
     "homepage": "https://github.com/tenantcloud/emailer",
     "keywords": ["Laravel", "Emailer", "mailer"],
     "require": {
-        "illuminate/support": "^6.2",
+        "illuminate/support": "^7.0",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0",
+        "phpunit/phpunit": "^9.0",
         "mockery/mockery": "^1.1",
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^5.0",
         "sempro/phpunit-pretty-print": "^1.0"
     },
     "autoload": {
