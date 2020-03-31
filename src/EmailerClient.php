@@ -4,6 +4,7 @@ namespace TenantCloud\Emailer;
 
 use Exception;
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use TenantCloud\Emailer\Api\Configuration;
 
 /**
@@ -24,8 +25,8 @@ class EmailerClient
 	 */
 	public function __construct(array $config)
 	{
-		$url = array_get($config, 'url');
-		$accessToken = array_get($config, 'accessToken');
+		$url = Arr::get($config, 'url');
+		$accessToken = Arr::get($config, 'accessToken');
 
 		if (!$url || !$accessToken) {
 			throw new Exception("'url' and 'accessToken' must be present in config array.");

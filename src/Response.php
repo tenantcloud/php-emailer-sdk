@@ -2,6 +2,7 @@
 
 namespace TenantCloud\Emailer;
 
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
@@ -51,7 +52,7 @@ class Response
 	 */
 	public function getErrors(): ?array
 	{
-		return array_get($this->data, 'errors');
+		return Arr::get($this->data, 'errors');
 	}
 
 	/**
@@ -59,7 +60,7 @@ class Response
 	 */
 	public function getMessage(): ?string
 	{
-		return array_get($this->data, 'message');
+		return Arr::get($this->data, 'message');
 	}
 
 	/**
