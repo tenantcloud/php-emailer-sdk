@@ -12,7 +12,7 @@
     "keywords": ["Laravel", "Emailer", "mailer"],
     "require": {
         "illuminate/support": "^7.0",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~7.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
