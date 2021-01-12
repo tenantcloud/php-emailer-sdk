@@ -11,7 +11,7 @@
     "homepage": "https://github.com/tenantcloud/emailer",
     "keywords": ["Laravel", "Emailer", "mailer"],
     "require": {
-        "illuminate/support": "^7.0",
+        "illuminate/support": "^7.0|^8.0",
         "guzzlehttp/guzzle": "~7.2"
     },
     "require-dev": {
