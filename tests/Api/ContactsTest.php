@@ -3,19 +3,17 @@
 namespace TenantCloud\Emailer\Tests\Api;
 
 use function GuzzleHttp\Psr7\parse_response;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ContactsTest
- * @package TenantCloud\Emailer\Tests\Api
  */
 class ContactsTest extends TestCase
 {
-	/**
-	 * @var string
-	 */
-	private $mockUrl = '../Mock/Contacts/';
+	/** @var string */
+	private $mockUrl = 'tests/Mock/Contacts/';
 
 	public function testStoreSuccess()
 	{
@@ -32,8 +30,8 @@ class ContactsTest extends TestCase
 		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
 
 		$response = $response->getBody()->getContents();
-		$this->assertTrue(str_contains($response, 'errors'));
-		$this->assertTrue(str_contains($response, 'email'));
+		$this->assertTrue(Str::contains($response, 'errors'));
+		$this->assertTrue(Str::contains($response, 'email'));
 	}
 
 	public function testStoreTimezoneRequiredFailure()
@@ -43,8 +41,8 @@ class ContactsTest extends TestCase
 		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
 
 		$response = $response->getBody()->getContents();
-		$this->assertTrue(str_contains($response, 'errors'));
-		$this->assertTrue(str_contains($response, 'timezone'));
+		$this->assertTrue(Str::contains($response, 'errors'));
+		$this->assertTrue(Str::contains($response, 'timezone'));
 	}
 
 	public function testStoreCategoriesRequiredFailure()
@@ -54,8 +52,8 @@ class ContactsTest extends TestCase
 		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
 
 		$response = $response->getBody()->getContents();
-		$this->assertTrue(str_contains($response, 'errors'));
-		$this->assertTrue(str_contains($response, 'categories'));
+		$this->assertTrue(Str::contains($response, 'errors'));
+		$this->assertTrue(Str::contains($response, 'categories'));
 	}
 
 	public function testUpdateSuccess()

@@ -4,7 +4,6 @@ namespace TenantCloud\Emailer\Api;
 
 /**
  * Class Configuration
- * @package TenantCloud\Emailer\Api
  */
 class Configuration
 {
