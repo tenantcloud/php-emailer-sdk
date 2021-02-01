@@ -8,13 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ListsTest
- * @package TenantCloud\Emailer\Tests\Api
  */
 class ListsTest extends TestCase
 {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $mockUrl = 'tests/Mock/Lists/';
 
 	public function testStoreSuccess()

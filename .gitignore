@@ -1,3 +1,19 @@
+# Editors
+.idea/*
+!.idea/fileTemplates
+
+# Dependencies
 /vendor/
-.idea
-.phpunit.result.cache
+/composer.lock
+
+# Build/coverage
+/build
+
+# Cache
+.php_cs.cache
+**/.phpunit.result.cache
+
+# Misc
+.DS_Store
+/*.log
+*.swp
