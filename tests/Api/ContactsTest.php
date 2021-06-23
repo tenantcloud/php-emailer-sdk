@@ -2,6 +2,9 @@
 
 namespace TenantCloud\Emailer\Tests\Api;
 
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Arr;
+use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 use function GuzzleHttp\Psr7\parse_response;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
@@ -12,15 +15,41 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContactsTest extends TestCase
 {
-	/** @var string */
-	private $mockUrl = 'tests/Mock/Contacts/';
+	private string $mockUrl = 'tests/Mock/Contacts/';
 
-	public function testStoreSuccess()
+	private MockHttpClientHelper $mockHelper;
+
+	private array $data;
+
+	private array $history = [];
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+
+		$this->mockHelper = new MockHttpClientHelper();
+		$this->data = [
+			'key1' => 'Key 1 value',
+			'key2' => 'Key 2 value'
+		];
+	}
+
+	public function testStoreSuccess(): void
 	{
 		$response = parse_response(file_get_contents($this->mockUrl . 'StoreContactSuccess.txt'));
 
-		$this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-		$this->assertNotEmpty($response->getBody()->getContents());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->store($this->data);
+
+		self::assertEquals(Response::HTTP_CREATED, $response->getCode());
+		self::assertNotEmpty($response->getData());
+
+
+		/* @var Request $request */
+		$request = Arr::get(Arr::first($this->history), 'request');
+		$params = $this->mockHelper->parseRequest($request);
+
+		$this->assertRequestData($this->data, $params);
 	}
 
 	public function testStoreEmailRequiredFailure()
@@ -78,5 +107,12 @@ class ContactsTest extends TestCase
 
 		$this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 		$this->assertEquals($response->getBody()->getContents(), '{}');
+	}
+
+	protected function assertRequestData(array $data, array $requestParams): void
+	{
+		foreach ($data as $key => $value) {
+			self::assertEquals($value, $requestParams[$key]);
+		}
 	}
 }
