@@ -3,11 +3,11 @@
 namespace TenantCloud\Emailer\Tests\Api;
 
 use function GuzzleHttp\Psr7\parse_response;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
-use GuzzleHttp\Psr7\Request;
 
 /**
  * Class ListsTest
@@ -29,7 +29,7 @@ class ListsTest extends TestCase
 		$this->mockHelper = new MockHttpClientHelper();
 		$this->data = [
 			'key1' => 'Key 1 value',
-			'key2' => 'Key 2 value'
+			'key2' => 'Key 2 value',
 		];
 	}
 
@@ -73,7 +73,7 @@ class ListsTest extends TestCase
 
 		self::assertEquals(Response::HTTP_OK, $response->getCode());
 		self::assertNotEmpty($response->getData());
-		self::assertEquals("lists/$id", $request->getUri()->getPath());
+		self::assertEquals("lists/{$id}", $request->getUri()->getPath());
 	}
 
 	public function testUpdateFailure(): void

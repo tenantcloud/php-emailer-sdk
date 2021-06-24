@@ -6,9 +6,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use TenantCloud\Emailer\EmailerClient;
-use GuzzleHttp\Psr7\Request;
 
 class MockHttpClientHelper
 {

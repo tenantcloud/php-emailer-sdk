@@ -2,13 +2,13 @@
 
 namespace TenantCloud\Emailer\Tests\Api;
 
+use function GuzzleHttp\Psr7\parse_response;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
-use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
-use function GuzzleHttp\Psr7\parse_response;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
 /**
  * Class ContactsTest
@@ -30,7 +30,7 @@ class ContactsTest extends TestCase
 		$this->mockHelper = new MockHttpClientHelper();
 		$this->data = [
 			'key1' => 'Key 1 value',
-			'key2' => 'Key 2 value'
+			'key2' => 'Key 2 value',
 		];
 	}
 
@@ -43,7 +43,6 @@ class ContactsTest extends TestCase
 
 		self::assertEquals(Response::HTTP_CREATED, $response->getCode());
 		self::assertNotEmpty($response->getData());
-
 
 		/* @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
