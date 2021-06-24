@@ -1,0 +1,15 @@
+HTTP/1.1 204
+status: 204
+Server: nginx/1.15.6
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Fri, 01 Feb 2019 08:18:01 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 58
+Set-Cookie: emailer_session=fFJjbakmjbLYtIeHstvPlRA0VlzhKmhjMgfmpClK; expires=Fri, 01-Feb-2019 10:18:01 GMT; Max-Age=7200; path=/; secure; httponly
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+
+{}

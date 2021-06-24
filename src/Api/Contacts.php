@@ -50,7 +50,7 @@ class Contacts implements ContactsContract
 	public function delete(int $id): Response
 	{
 		try {
-			$response = $this->client->delete("{$this->url}/{$id}");
+			$response = $this->httpClient->delete("{$this->url}/{$id}");
 		} catch (Exception $e) {
 			$response = $e->getResponse();
 		}

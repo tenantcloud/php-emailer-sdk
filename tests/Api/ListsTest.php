@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
 /**
@@ -14,6 +15,8 @@ use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
  */
 class ListsTest extends TestCase
 {
+	use AssertsHelper;
+
 	private string $mockUrl = 'tests/Mock/Lists/';
 
 	private MockHttpClientHelper $mockHelper;
@@ -97,12 +100,5 @@ class ListsTest extends TestCase
 
 		self::assertEquals(Response::HTTP_NO_CONTENT, $response->getCode());
 		self::assertEquals([], $response->getData());
-	}
-
-	protected function assertRequestData(array $data, array $requestParams): void
-	{
-		foreach ($data as $key => $value) {
-			self::assertEquals($value, $requestParams[$key]);
-		}
 	}
 }
