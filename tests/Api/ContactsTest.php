@@ -2,8 +2,8 @@
 
 namespace TenantCloud\Emailer\Tests\Api;
 
-use function GuzzleHttp\Psr7\parse_response;
 use Illuminate\Support\Str;
+use function GuzzleHttp\Psr7\parse_response;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
