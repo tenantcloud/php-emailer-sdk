@@ -27,17 +27,13 @@ class EmailerClient implements ClientContract
 			throw new Exception("'url' and 'accessToken' must be present in config array.");
 		}
 
-		if ($client) {
-			$this->client = $client;
-		} else {
-			$this->client = new Client([
-				'base_uri' => $url,
-				'headers'  => [
-					'Authorization' => 'Token ' . $accessToken,
-					'Accept'        => 'application/json',
-				],
-			]);
-		}
+		$this->client = $client ?? new Client([
+			'base_uri' => $url,
+			'headers'  => [
+				'Authorization' => 'Token ' . $accessToken,
+				'Accept'        => 'application/json',
+			],
+		]);
 	}
 
 	/**
