@@ -2,8 +2,8 @@
 
 namespace TenantCloud\Emailer\Api;
 
-use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\CampaignsContract;
 use TenantCloud\Emailer\Response;
 
@@ -24,7 +24,7 @@ class Campaigns implements CampaignsContract
 			$response = $this->httpClient->post($this->url, [
 				'form_params' => $data,
 			]);
-		} catch (Exception $e) {
+		} catch (RequestException $e) {
 			$response = $e->getResponse();
 		}
 

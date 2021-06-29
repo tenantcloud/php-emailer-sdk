@@ -2,7 +2,6 @@
 
 namespace TenantCloud\Emailer\Api;
 
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\ContactContract;
