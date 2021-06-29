@@ -1,0 +1,13 @@
+HTTP/1.1 422
+status: 422
+Server: nginx/1.15.6
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Fri, 01 Feb 2019 08:13:06 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 58
+Set-Cookie: emailer_session=fFJjbakmjbLYtIeHstvPlRA0VlzhKmhjMgfmpClK; expires=Fri, 01-Feb-2019 10:13:06 GMT; Max-Age=7200; path=/; secure; httponly
+
+{"message":"The given data was invalid.","errors":{"receiver_email":["The receiver_email field is required."],"campaign_slug":["The campaign_slug field is required."]}}

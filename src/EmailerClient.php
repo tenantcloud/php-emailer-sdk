@@ -5,20 +5,20 @@ namespace TenantCloud\Emailer;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
-use TenantCloud\Emailer\Api\Configuration;
+use TenantCloud\Emailer\Api\Campaigns;
+use TenantCloud\Emailer\Api\Contact;
+use TenantCloud\Emailer\Api\Contacts;
+use TenantCloud\Emailer\Api\Emails;
+use TenantCloud\Emailer\Api\Lists;
 
 /**
  * Class EmailerClient
  */
-class EmailerClient
+class EmailerClient implements ClientContract
 {
-	/** @var Client */
-	private $client;
+	private Client $client;
 
-	/**
-	 * EmailerClient constructor.
-	 */
-	public function __construct(array $config)
+	public function __construct(array $config, Client $client = null)
 	{
 		$url = Arr::get($config, 'url');
 		$accessToken = Arr::get($config, 'accessToken');
@@ -27,92 +27,46 @@ class EmailerClient
 			throw new Exception("'url' and 'accessToken' must be present in config array.");
 		}
 
-		$this->client = new Client([
+		$this->client = $client ?? new Client([
 			'base_uri' => $url,
 			'headers'  => [
 				'Authorization' => 'Token ' . $accessToken,
 				'Accept'        => 'application/json',
 			],
 		]);
-
-		Configuration::$client = $this;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function lists()
+	public function lists(): Lists
 	{
-		return $this->makeApi('lists');
+		return new Lists($this->client);
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function contacts()
+	public function contacts(): Contacts
 	{
-		return $this->makeApi('contacts');
+		return new Contacts($this->client);
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function contact()
+	public function contact(): Contact
 	{
-		return $this->makeApi('contact');
+		return new Contact($this->client);
 	}
 
-	public function store(string $url, array $data): Response
+	public function emails(): Emails
 	{
-		try {
-			$response = $this->client->post($url, [
-				'form_params' => $data,
-			]);
-		} catch (Exception $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
+		return new Emails($this->client);
 	}
 
-	public function update(string $url, array $data): Response
+	public function campaigns(): Campaigns
 	{
-		try {
-			$response = $this->client->put($url, [
-				'form_params' => $data,
-			]);
-		} catch (Exception $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
-	}
-
-	public function destroy(string $url, array $data = []): Response
-	{
-		try {
-			$response = $this->client->delete($url, [
-				'form_params' => $data,
-			]);
-		} catch (Exception $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	private function makeApi(string $name)
-	{
-		$fileName = ucfirst($name);
-		$class = '\\TenantCloud\\Emailer\\Api\\' . $fileName;
-
-		if (!class_exists($class)) {
-			throw new Exception("Class '{$class}' not found");
-		}
-
-		return new $class();
+		return new Campaigns($this->client);
 	}
 }

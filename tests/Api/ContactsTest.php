@@ -3,80 +3,130 @@
 namespace TenantCloud\Emailer\Tests\Api;
 
 use function GuzzleHttp\Psr7\parse_response;
-use Illuminate\Support\Str;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
+use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
 /**
  * Class ContactsTest
  */
 class ContactsTest extends TestCase
 {
-	/** @var string */
-	private $mockUrl = 'tests/Mock/Contacts/';
+	use AssertsHelper;
 
-	public function testStoreSuccess()
+	private string $mockUrl = 'tests/Mock/Contacts/';
+
+	private MockHttpClientHelper $mockHelper;
+
+	private array $data;
+
+	private array $history = [];
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+
+		$this->mockHelper = new MockHttpClientHelper();
+		$this->data = [
+			'key1' => 'Key 1 value',
+			'key2' => 'Key 2 value',
+		];
+	}
+
+	public function testStoreSuccess(): void
 	{
 		$response = parse_response(file_get_contents($this->mockUrl . 'StoreContactSuccess.txt'));
 
-		$this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-		$this->assertNotEmpty($response->getBody()->getContents());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->store($this->data);
+
+		self::assertEquals(Response::HTTP_CREATED, $response->getCode());
+		self::assertNotEmpty($response->getData());
+
+		/* @var Request $request */
+		$request = Arr::get(Arr::first($this->history), 'request');
+		$params = $this->mockHelper->parseRequest($request);
+
+		$this->assertRequestData($this->data, $params);
 	}
 
-	public function testStoreEmailRequiredFailure()
+	public function testStoreEmailRequiredFailure(): void
 	{
 		$response = parse_response(file_get_contents($this->mockUrl . 'StoreContactEmailRequiredFailure.txt'));
 
-		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->store($this->data);
 
-		$response = $response->getBody()->getContents();
-		$this->assertTrue(Str::contains($response, 'errors'));
-		$this->assertTrue(Str::contains($response, 'email'));
+		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
+		self::assertEquals('The given data was invalid.', $response->getMessage());
+		self::assertEquals('The email field is required.', Arr::get($response->getData(), 'errors.email.0'));
 	}
 
-	public function testStoreTimezoneRequiredFailure()
+	public function testStoreTimezoneRequiredFailure(): void
 	{
 		$response = parse_response(file_get_contents($this->mockUrl . 'StoreContactTimezoneRequiredFailure.txt'));
 
-		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->store($this->data);
 
-		$response = $response->getBody()->getContents();
-		$this->assertTrue(Str::contains($response, 'errors'));
-		$this->assertTrue(Str::contains($response, 'timezone'));
+		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
+		self::assertEquals('The given data was invalid.', $response->getMessage());
+		self::assertEquals('The timezone field is required.', Arr::get($response->getData(), 'errors.timezone.0'));
 	}
 
-	public function testStoreCategoriesRequiredFailure()
+	public function testStoreCategoriesRequiredFailure(): void
 	{
 		$response = parse_response(file_get_contents($this->mockUrl . 'StoreContactCategoriesRequiredFailure.txt'));
 
-		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->store($this->data);
 
-		$response = $response->getBody()->getContents();
-		$this->assertTrue(Str::contains($response, 'errors'));
-		$this->assertTrue(Str::contains($response, 'categories'));
+		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
+		self::assertEquals('The given data was invalid.', $response->getMessage());
+		self::assertEquals('The categories field is required.', Arr::get($response->getData(), 'errors.categories.0'));
 	}
 
-	public function testUpdateSuccess()
+	public function testUpdateSuccess(): void
 	{
+		$id = 1;
 		$response = parse_response(file_get_contents($this->mockUrl . 'UpdateContactSuccess.txt'));
 
-		$this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-		$this->assertNotEmpty($response->getBody()->getContents());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->update($id, $this->data);
+
+		/* @var Request $request */
+		$request = Arr::get(Arr::first($this->history), 'request');
+
+		self::assertEquals(Response::HTTP_OK, $response->getCode());
+		self::assertNotEmpty($response->getData());
+		self::assertEquals("contacts/{$id}", $request->getUri()->getPath());
 	}
 
-	public function testUpdateFailure()
+	public function testUpdateFailure(): void
 	{
+		$id = 1;
 		$response = parse_response(file_get_contents($this->mockUrl . 'UpdateContactFailure.txt'));
 
-		$this->assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-		$this->assertNotEmpty($response->getBody()->getContents());
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->update($id, $this->data);
+
+		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
+		self::assertEquals('The given data was invalid.', $response->getMessage());
+		self::assertNotEmpty($response->getData());
 	}
 
-	public function testDeleteSuccess()
+	public function testDeleteSuccess(): void
 	{
+		$id = 1;
 		$response = parse_response(file_get_contents($this->mockUrl . 'DeleteContactSuccess.txt'));
 
-		$this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-		$this->assertEquals($response->getBody()->getContents(), '{}');
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$response = $emailerClient->contacts()->delete($id);
+
+		self::assertEquals(Response::HTTP_NO_CONTENT, $response->getCode());
+		self::assertEquals([], $response->getData());
 	}
 }

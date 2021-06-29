@@ -1,0 +1,16 @@
+HTTP/1.1 201
+status: 201
+Server: nginx/1.15.6
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Thu, 31 Jan 2019 16:58:50 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 58
+Set-Cookie: emailer_session=4bmjEFVdlB4Kj8M8ISMt473JXHGfZO7UoCRoHBiz; expires=Thu, 31-Jan-2019 18:58:50 GMT; Max-Age=7200; path=/; secure; httponly
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+
+{"id":18,"name":"Testing","subject":null,"type":"one_time","slug":"slug","created_at":"Jan 31, 2019"}
