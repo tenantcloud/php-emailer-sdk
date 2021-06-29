@@ -4,6 +4,7 @@ namespace TenantCloud\Emailer\Api;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\ListsContract;
 use TenantCloud\Emailer\Response;
 
@@ -27,7 +28,7 @@ class Lists implements ListsContract
 			$response = $this->httpClient->post($this->url, [
 				'form_params' => $data,
 			]);
-		} catch (Exception $e) {
+		} catch (RequestException $e) {
 			$response = $e->getResponse();
 		}
 
@@ -40,7 +41,7 @@ class Lists implements ListsContract
 			$response = $this->httpClient->put("{$this->url}/{$id}", [
 				'form_params' => $data,
 			]);
-		} catch (Exception $e) {
+		} catch (RequestException $e) {
 			$response = $e->getResponse();
 		}
 
@@ -51,7 +52,7 @@ class Lists implements ListsContract
 	{
 		try {
 			$response = $this->httpClient->delete("{$this->url}/{$id}");
-		} catch (Exception $e) {
+		} catch (RequestException $e) {
 			$response = $e->getResponse();
 		}
 

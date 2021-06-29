@@ -4,6 +4,7 @@ namespace TenantCloud\Emailer\Api;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\ContactContract;
 use TenantCloud\Emailer\Response;
 
@@ -27,7 +28,7 @@ class Contact implements ContactContract
 			$response = $this->httpClient->delete($this->url, [
 				'form_params' => $data,
 			]);
-		} catch (Exception $e) {
+		} catch (RequestException $e) {
 			$response = $e->getResponse();
 		}
 
