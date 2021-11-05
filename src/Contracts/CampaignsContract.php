@@ -2,9 +2,10 @@
 
 namespace TenantCloud\Emailer\Contracts;
 
-use TenantCloud\Emailer\Response;
-
 interface CampaignsContract
 {
-	public function store(array $data): Response;
+	/**
+	 * @return mixed
+	 */
+	public function store(array $data);
 }

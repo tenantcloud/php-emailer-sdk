@@ -2,13 +2,20 @@
 
 namespace TenantCloud\Emailer\Contracts;
 
-use TenantCloud\Emailer\Response;
-
 interface ContactsContract
 {
-	public function store(array $data): Response;
+	/**
+	 * @return mixed
+	 */
+	public function store(array $data);
 
-	public function update(int $id, array $data): Response;
+	/**
+	 * @return mixed
+	 */
+	public function update(int $id, array $data);
 
-	public function delete(int $id): Response;
+	/**
+	 * @return mixed
+	 */
+	public function delete(int $id): void;
 }

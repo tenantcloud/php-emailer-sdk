@@ -2,11 +2,11 @@
 
 namespace TenantCloud\Emailer\Tests\Api;
 
-use function GuzzleHttp\Psr7\parse_response;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Response;
 use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
@@ -38,13 +38,10 @@ class ListsTest extends TestCase
 
 	public function testStoreSuccess(): void
 	{
-		$response = parse_response(file_get_contents($this->mockUrl . 'StoreListSuccess.txt'));
+		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'StoreListSuccess.txt'));
 
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->store($this->data);
-
-		self::assertEquals(Response::HTTP_CREATED, $response->getCode());
-		self::assertNotEmpty($response->getData());
+		$emailerClient->lists()->store($this->data);
 
 		/* @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
@@ -55,50 +52,55 @@ class ListsTest extends TestCase
 
 	public function testStoreFailure(): void
 	{
-		$response = parse_response(file_get_contents($this->mockUrl . 'StoreListFailure.txt'));
-		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->store($this->data);
+		$this->expectException(RequestException::class);
+		$this->expectExceptionMessage(
+			<<<'MM'
+			Client error: `POST lists` resulted in a `422 Unprocessable Entity` response:
+			{"message":"The given data was invalid.","errors":{"name":["The name has already been taken."]}}
+			MM
+		);
 
-		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
-		self::assertEquals('The given data was invalid.', $response->getMessage());
-		self::assertNotEmpty($response->getData());
+		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'StoreListFailure.txt'));
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$emailerClient->lists()->store($this->data);
 	}
 
 	public function testUpdateSuccess(): void
 	{
 		$id = 1;
-		$response = parse_response(file_get_contents($this->mockUrl . 'UpdateListSuccess.txt'));
+		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'UpdateListSuccess.txt'));
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->update($id, $this->data);
+		$emailerClient->lists()->update($id, $this->data);
 
 		/* @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 
-		self::assertEquals(Response::HTTP_OK, $response->getCode());
-		self::assertNotEmpty($response->getData());
 		self::assertEquals("lists/{$id}", $request->getUri()->getPath());
 	}
 
 	public function testUpdateFailure(): void
 	{
-		$id = 1;
-		$response = parse_response(file_get_contents($this->mockUrl . 'UpdateListFailure.txt'));
-		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->update($id, $this->data);
+		$this->expectException(RequestException::class);
+		$this->expectExceptionMessage(
+			<<<'MM'
+			Client error: `PUT lists/1` resulted in a `422 Unprocessable Entity` response:
+			{"message":"The given data was invalid.","errors":{"name":["The name may not be greater than 30 characters."]}}
+			MM
+		);
 
-		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
-		self::assertEquals('The given data was invalid.', $response->getMessage());
-		self::assertNotEmpty($response->getData());
+		$id = 1;
+		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'UpdateListFailure.txt'));
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$emailerClient->lists()->update($id, $this->data);
 	}
 
 	public function testDeleteSuccess(): void
 	{
-		$id = 1;
-		$response = parse_response(file_get_contents($this->mockUrl . 'DeleteListSuccess.txt'));
-		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->delete($id);
+		$this->expectNotToPerformAssertions();
 
-		self::assertEquals(Response::HTTP_NO_CONTENT, $response->getCode());
-		self::assertEquals([], $response->getData());
+		$id = 1;
+		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'DeleteListSuccess.txt'));
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$emailerClient->lists()->delete($id);
 	}
 }

@@ -13,7 +13,8 @@
     "require": {
 		"php": ">=7.4",
         "guzzlehttp/guzzle": "^7.2",
-		"illuminate/support": "^7.0|^8.0"
+		"illuminate/support": "^7.0|^8.0",
+        "tenantcloud/guzzle-helper": "^1.1"
     },
     "require-dev": {
 		"pestphp/pest": "^1.0",
@@ -31,6 +32,7 @@
         }
     },
 	"scripts": {
+		"test": "./vendor/bin/phpunit",
 		"cs-fix": "./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --show-progress=estimating"
 	}
 }
