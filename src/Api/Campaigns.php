@@ -3,9 +3,8 @@
 namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\CampaignsContract;
-use TenantCloud\Emailer\Response;
+use function TenantCloud\GuzzleHelper\psr_response_to_json;
 
 class Campaigns implements CampaignsContract
 {
@@ -18,16 +17,12 @@ class Campaigns implements CampaignsContract
 		$this->httpClient = $httpClient;
 	}
 
-	public function store(array $data): Response
+	public function store(array $data)
 	{
-		try {
-			$response = $this->httpClient->post($this->url, [
-				'form_params' => $data,
-			]);
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
+		$response = $this->httpClient->post($this->url, [
+			'form_params' => $data,
+		]);
 
-		return new Response($response);
+		return psr_response_to_json($response);
 	}
 }

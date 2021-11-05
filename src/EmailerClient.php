@@ -4,12 +4,16 @@ namespace TenantCloud\Emailer;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use Illuminate\Support\Arr;
 use TenantCloud\Emailer\Api\Campaigns;
 use TenantCloud\Emailer\Api\Contact;
 use TenantCloud\Emailer\Api\Contacts;
 use TenantCloud\Emailer\Api\Emails;
 use TenantCloud\Emailer\Api\Lists;
+use TenantCloud\GuzzleHelper\DumpRequestBody\HeaderObfuscator;
+use TenantCloud\GuzzleHelper\DumpRequestBody\JsonObfuscator;
+use TenantCloud\GuzzleHelper\GuzzleMiddleware;
 
 /**
  * Class EmailerClient
@@ -27,34 +31,37 @@ class EmailerClient implements ClientContract
 			throw new Exception("'url' and 'accessToken' must be present in config array.");
 		}
 
+		$stack = HandlerStack::create();
+
+		$stack->unshift(GuzzleMiddleware::fullErrorResponseBody());
+		$stack->unshift(GuzzleMiddleware::dumpRequestBody([
+			new JsonObfuscator([
+				'email',
+				'phone',
+			]),
+			new HeaderObfuscator(['Authorization']),
+		]));
+
 		$this->client = $client ?? new Client([
 			'base_uri' => $url,
 			'headers'  => [
 				'Authorization' => 'Token ' . $accessToken,
 				'Accept'        => 'application/json',
 			],
+			'handler' => $stack,
 		]);
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function lists(): Lists
 	{
 		return new Lists($this->client);
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function contacts(): Contacts
 	{
 		return new Contacts($this->client);
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function contact(): Contact
 	{
 		return new Contact($this->client);

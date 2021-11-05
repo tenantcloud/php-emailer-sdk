@@ -3,9 +3,7 @@
 namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\ContactContract;
-use TenantCloud\Emailer\Response;
 
 /**
  * Class Contact
@@ -21,16 +19,10 @@ class Contact implements ContactContract
 		$this->httpClient = $httpClient;
 	}
 
-	public function delete(array $data): Response
+	public function delete(array $data): void
 	{
-		try {
-			$response = $this->httpClient->delete($this->url, [
-				'form_params' => $data,
-			]);
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
+		$this->httpClient->delete($this->url, [
+			'form_params' => $data,
+		]);
 	}
 }

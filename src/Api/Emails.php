@@ -3,9 +3,7 @@
 namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\EmailsContract;
-use TenantCloud\Emailer\Response;
 
 class Emails implements EmailsContract
 {
@@ -18,16 +16,10 @@ class Emails implements EmailsContract
 		$this->httpClient = $httpClient;
 	}
 
-	public function send(array $data): Response
+	public function send(array $data): void
 	{
-		try {
-			$response = $this->httpClient->post($this->url, [
-				'form_params' => $data,
-			]);
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
+		$this->httpClient->post($this->url, [
+			'form_params' => $data,
+		]);
 	}
 }

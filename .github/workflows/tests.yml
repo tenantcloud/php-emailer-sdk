@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Tests on PHP ${{ matrix.php }}
+    name: Tests on PHP ${{ matrix.php }} and ${{ matrix.dependencies }} dependencies
 
     runs-on: ubuntu-latest
 
@@ -14,6 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         php: [7.4, 8.0]
+        dependencies: [lowest, highest]
 
     steps:
       - name: Checkout code
@@ -26,20 +27,10 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
 
       - name: Execute tests
         run: vendor/bin/pest --colors=always
@@ -57,21 +48,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
-          extensions: dom, curl, libxml, mbstring, zip
-          tools: composer:v2
           coverage: none
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
       - name: Install dependencies
-        run: composer install --dev --prefer-dist --no-progress --no-suggest --working-dir=tools/php-cs-fixer
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: --working-dir=tools/php-cs-fixer
 
       - name: Run php-cs-fixer
         run: composer cs-fix -- --dry-run --diff --using-cache=no --diff-format udiff

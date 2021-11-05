@@ -3,9 +3,8 @@
 namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use TenantCloud\Emailer\Contracts\ListsContract;
-use TenantCloud\Emailer\Response;
+use function TenantCloud\GuzzleHelper\psr_response_to_json;
 
 /**
  * Class Lists
@@ -21,40 +20,26 @@ class Lists implements ListsContract
 		$this->httpClient = $httpClient;
 	}
 
-	public function store(array $data): Response
+	public function store(array $data)
 	{
-		try {
-			$response = $this->httpClient->post($this->url, [
-				'form_params' => $data,
-			]);
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
+		$response = $this->httpClient->post($this->url, [
+			'form_params' => $data,
+		]);
 
-		return new Response($response);
+		return psr_response_to_json($response);
 	}
 
-	public function update(int $id, array $data): Response
+	public function update(int $id, array $data)
 	{
-		try {
-			$response = $this->httpClient->put("{$this->url}/{$id}", [
-				'form_params' => $data,
-			]);
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
+		$response = $this->httpClient->put("{$this->url}/{$id}", [
+			'form_params' => $data,
+		]);
 
-		return new Response($response);
+		return psr_response_to_json($response);
 	}
 
-	public function delete(int $id): Response
+	public function delete(int $id): void
 	{
-		try {
-			$response = $this->httpClient->delete("{$this->url}/{$id}");
-		} catch (RequestException $e) {
-			$response = $e->getResponse();
-		}
-
-		return new Response($response);
+		$this->httpClient->delete("{$this->url}/{$id}");
 	}
 }

@@ -2,11 +2,11 @@
 
 namespace TenantCloud\Emailer\Tests\Api;
 
-use function GuzzleHttp\Psr7\parse_response;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Response;
 use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
@@ -35,13 +35,10 @@ class EmailsTest extends TestCase
 
 	public function testSendSuccess(): void
 	{
-		$response = parse_response(file_get_contents('tests/Mock/Emails/SendEmailSuccess.txt'));
+		$response = Message::parseResponse(file_get_contents('tests/Mock/Emails/SendEmailSuccess.txt'));
 
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->emails()->send($this->data);
-
-		self::assertEquals(Response::HTTP_CREATED, $response->getCode());
-		self::assertEmpty($response->getData());
+		$emailerClient->emails()->send($this->data);
 
 		/* @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
@@ -52,14 +49,16 @@ class EmailsTest extends TestCase
 
 	public function testStoreFailure(): void
 	{
-		$response = parse_response(file_get_contents('tests/Mock/Emails/SendEmailNotExistedContactFailure.txt'));
-		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
-		$response = $emailerClient->lists()->store($this->data);
+		$this->expectException(RequestException::class);
+		$this->expectExceptionMessage(
+			<<<'MM'
+			Client error: `POST public/emails` resulted in a `422 Unprocessable Entity` response:
+			{"message":"The given data was invalid.","errors":{"receiver_email":["The receiver_email field is required."],"campaign_ (truncated...)
+			MM
+		);
 
-		self::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getCode());
-		self::assertEquals('The given data was invalid.', $response->getMessage());
-		self::assertNotEmpty($response->getData());
-		self::assertEquals('The receiver_email field is required.', Arr::get($response->getData(), 'errors.receiver_email.0'));
-		self::assertEquals('The campaign_slug field is required.', Arr::get($response->getData(), 'errors.campaign_slug.0'));
+		$response = Message::parseResponse(file_get_contents('tests/Mock/Emails/SendEmailNotExistedContactFailure.txt'));
+		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
+		$emailerClient->emails()->send($this->data);
 	}
 }

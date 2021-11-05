@@ -2,9 +2,10 @@
 
 namespace TenantCloud\Emailer\Contracts;
 
-use TenantCloud\Emailer\Response;
-
 interface EmailsContract
 {
-	public function send(array $data): Response;
+	/**
+	 * @return mixed
+	 */
+	public function send(array $data): void;
 }
