@@ -1,0 +1,16 @@
+HTTP/1.1 201
+status: 201
+Server: nginx/1.15.6
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Cache-Control: no-cache, private
+Date: Fri, 01 Feb 2019 08:06:12 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+Set-Cookie: emailer_session=fFJjbakmjbLYtIeHstvPlRA0VlzhKmhjMgfmpClK; expires=Fri, 01-Feb-2019 10:06:12 GMT; Max-Age=7200; path=/; secure; httponly
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+
+{"api_key":"49f5f1a0-2d64-11ed-9749-a37d93b73fc8","mailing_lists":{"landlords":10000109,"tenants":10000110,"service_pros":10000111,"owners":10000112,"sub_admins":10000113,"basics":10000114,"starter":10000115,"starter_service_pro":10000116,"growth":10000117,"business":10000118,"basics_service_pro":10000119}}
