@@ -5,6 +5,7 @@ namespace TenantCloud\Emailer;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Arr;
 use TenantCloud\Emailer\Api\Campaigns;
 use TenantCloud\Emailer\Api\Contact;
@@ -48,7 +49,9 @@ class EmailerClient implements ClientContract
 				'Authorization' => 'Token ' . $accessToken,
 				'Accept'        => 'application/json',
 			],
-			'handler' => $stack,
+			'handler'                       => $stack,
+			RequestOptions::CONNECT_TIMEOUT => 10,
+			RequestOptions::TIMEOUT         => 30,
 		]);
 	}
 
