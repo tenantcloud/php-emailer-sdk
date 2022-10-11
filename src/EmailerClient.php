@@ -4,16 +4,22 @@ namespace TenantCloud\Emailer;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Arr;
 use TenantCloud\Emailer\Api\Campaigns;
 use TenantCloud\Emailer\Api\Contact;
 use TenantCloud\Emailer\Api\Contacts;
 use TenantCloud\Emailer\Api\Emails;
 use TenantCloud\Emailer\Api\Lists;
+use TenantCloud\Emailer\Campaigns\UserNotFoundException;
+use TenantCloud\Emailer\Campaigns\UserUnsubscribedException;
 use TenantCloud\GuzzleHelper\DumpRequestBody\HeaderObfuscator;
 use TenantCloud\GuzzleHelper\DumpRequestBody\JsonObfuscator;
 use TenantCloud\GuzzleHelper\GuzzleMiddleware;
+use function TenantCloud\GuzzleHelper\psr_response_to_json;
+use Throwable;
 
 /**
  * Class EmailerClient
@@ -33,6 +39,7 @@ class EmailerClient implements ClientContract
 
 		$stack = HandlerStack::create();
 
+		$stack->unshift($this->rethrowMiddleware());
 		$stack->unshift(GuzzleMiddleware::fullErrorResponseBody());
 		$stack->unshift(GuzzleMiddleware::dumpRequestBody([
 			new JsonObfuscator([
@@ -48,7 +55,9 @@ class EmailerClient implements ClientContract
 				'Authorization' => 'Token ' . $accessToken,
 				'Accept'        => 'application/json',
 			],
-			'handler' => $stack,
+			'handler'                       => $stack,
+			RequestOptions::CONNECT_TIMEOUT => 10,
+			RequestOptions::TIMEOUT         => 30,
 		]);
 	}
 
@@ -75,5 +84,32 @@ class EmailerClient implements ClientContract
 	public function campaigns(): Campaigns
 	{
 		return new Campaigns($this->client);
+	}
+
+	private function rethrowMiddleware(): callable
+	{
+		return GuzzleMiddleware::rethrowException(static function (Throwable $e) {
+			if (!$e instanceof RequestException || !$e->hasResponse()) {
+				throw $e;
+			}
+
+			$decodedBody = psr_response_to_json($e->getResponse());
+
+			if (!$decodedBody) {
+				throw $e;
+			}
+
+			$errorName = Arr::get($decodedBody, 'code');
+
+			if ($errorName === UserNotFoundException::CODE) {
+				throw new UserNotFoundException('', 0, $e);
+			}
+
+			if ($errorName === UserUnsubscribedException::CODE) {
+				throw new UserUnsubscribedException('', 0, $e);
+			}
+
+			throw $e;
+		});
 	}
 }
