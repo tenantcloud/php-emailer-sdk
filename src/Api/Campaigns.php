@@ -4,6 +4,7 @@ namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
 use TenantCloud\Emailer\Contracts\CampaignsContract;
+
 use function TenantCloud\GuzzleHelper\psr_response_to_json;
 
 class Campaigns implements CampaignsContract

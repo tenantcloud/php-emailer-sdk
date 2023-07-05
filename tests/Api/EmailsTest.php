@@ -52,9 +52,9 @@ class EmailsTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `POST public/emails` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"receiver_email":["The receiver_email field is required."],"campaign_ (truncated...)
-			MM
+				Client error: `POST public/emails` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"receiver_email":["The receiver_email field is required."],"campaign_ (truncated...)
+				MM
 		);
 
 		$response = Message::parseResponse(file_get_contents('tests/Mock/Emails/SendEmailNotExistedContactFailure.txt'));

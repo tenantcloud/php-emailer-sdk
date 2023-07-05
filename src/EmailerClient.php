@@ -18,12 +18,10 @@ use TenantCloud\Emailer\Campaigns\UserUnsubscribedException;
 use TenantCloud\GuzzleHelper\DumpRequestBody\HeaderObfuscator;
 use TenantCloud\GuzzleHelper\DumpRequestBody\JsonObfuscator;
 use TenantCloud\GuzzleHelper\GuzzleMiddleware;
-use function TenantCloud\GuzzleHelper\psr_response_to_json;
 use Throwable;
 
-/**
- * Class EmailerClient
- */
+use function TenantCloud\GuzzleHelper\psr_response_to_json;
+
 class EmailerClient implements ClientContract
 {
 	private Client $client;

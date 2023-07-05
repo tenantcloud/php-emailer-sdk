@@ -47,8 +47,9 @@ class UsersTest extends TestCase
 		$this->assertRequestData($this->data, $params);
 
 		$this->assertSame(
-			json_encode($response),
-			'{"api_key":"49f5f1a0-2d64-11ed-9749-a37d93b73fc8","mailing_lists":{"landlords":10000109,"tenants":10000110,"service_pros":10000111,"owners":10000112,"sub_admins":10000113,"basics":10000114,"starter":10000115,"starter_service_pro":10000116,"growth":10000117,"business":10000118,"basics_service_pro":10000119}}')
+			'{"api_key":"49f5f1a0-2d64-11ed-9749-a37d93b73fc8","mailing_lists":{"landlords":10000109,"tenants":10000110,"service_pros":10000111,"owners":10000112,"sub_admins":10000113,"basics":10000114,"starter":10000115,"starter_service_pro":10000116,"growth":10000117,"business":10000118,"basics_service_pro":10000119}}',
+			json_encode($response)
+		)
 		;
 	}
 
@@ -57,9 +58,9 @@ class UsersTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `POST public/users` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
-			MM
+				Client error: `POST public/users` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
+				MM
 		);
 
 		$response = Message::parseResponse(file_get_contents('tests/Mock/Users/CreateUserValidationFailure.txt'));
