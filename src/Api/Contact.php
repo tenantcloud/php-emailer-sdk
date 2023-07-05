@@ -5,9 +5,6 @@ namespace TenantCloud\Emailer\Api;
 use GuzzleHttp\Client;
 use TenantCloud\Emailer\Contracts\ContactContract;
 
-/**
- * Class Contact
- */
 class Contact implements ContactContract
 {
 	private string $url = 'contact';

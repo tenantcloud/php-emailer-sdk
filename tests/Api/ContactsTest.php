@@ -10,9 +10,6 @@ use PHPUnit\Framework\TestCase;
 use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
-/**
- * Class ContactsTest
- */
 class ContactsTest extends TestCase
 {
 	use AssertsHelper;
@@ -55,9 +52,9 @@ class ContactsTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `POST contacts` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
-			MM
+				Client error: `POST contacts` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
+				MM
 		);
 
 		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'StoreContactEmailRequiredFailure.txt'));
@@ -85,9 +82,9 @@ class ContactsTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `PUT contacts/1` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"first_name":["The first name may not be greater than 30 characters." (truncated...)
-			MM
+				Client error: `PUT contacts/1` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"first_name":["The first name may not be greater than 30 characters." (truncated...)
+				MM
 		);
 
 		$id = 1;

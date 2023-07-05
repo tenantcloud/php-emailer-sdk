@@ -4,11 +4,9 @@ namespace TenantCloud\Emailer\Api;
 
 use GuzzleHttp\Client;
 use TenantCloud\Emailer\Contracts\ContactsContract;
+
 use function TenantCloud\GuzzleHelper\psr_response_to_json;
 
-/**
- * Class Contacts
- */
 class Contacts implements ContactsContract
 {
 	private string $url = 'contacts';

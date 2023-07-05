@@ -10,9 +10,6 @@ use PHPUnit\Framework\TestCase;
 use TenantCloud\Emailer\Tests\Helpers\AssertsHelper;
 use TenantCloud\Emailer\Tests\Helpers\MockHttpClientHelper;
 
-/**
- * Class ListsTest
- */
 class ListsTest extends TestCase
 {
 	use AssertsHelper;
@@ -55,9 +52,9 @@ class ListsTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `POST lists` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"name":["The name has already been taken."]}}
-			MM
+				Client error: `POST lists` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"name":["The name has already been taken."]}}
+				MM
 		);
 
 		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'StoreListFailure.txt'));
@@ -83,9 +80,9 @@ class ListsTest extends TestCase
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
 			<<<'MM'
-			Client error: `PUT lists/1` resulted in a `422 Unprocessable Entity` response:
-			{"message":"The given data was invalid.","errors":{"name":["The name may not be greater than 30 characters."]}}
-			MM
+				Client error: `PUT lists/1` resulted in a `422 Unprocessable Entity` response:
+				{"message":"The given data was invalid.","errors":{"name":["The name may not be greater than 30 characters."]}}
+				MM
 		);
 
 		$id = 1;
