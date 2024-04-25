@@ -11,7 +11,7 @@ This is where your description should go. Take a look at [contributing.md](contr
 
 Via Composer
 
-``` bash
+```bash
 $ composer require tenantcloud/emailer
 ```
 
@@ -31,8 +31,8 @@ If you discover any security related issues, please email y.nahirnyi@tenantcloud
 
 ## Credits
 
-- [Yaroslav Nahirnyi][link-author]
-- [All Contributors][link-contributors]
+-   [Yaroslav Nahirnyi][link-author]
+-   [All Contributors][link-contributors]
 
 ## License
 
@@ -42,7 +42,6 @@ license. Please see the [license file](license.md) for more information.
 [ico-downloads]: https://img.shields.io/packagist/dt/tenantcloud/emailer.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/tenantcloud/emailer/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/12345678/shield
-
 [link-packagist]: https://packagist.org/packages/tenantcloud/emailer
 [link-downloads]: https://packagist.org/packages/tenantcloud/emailer
 [link-travis]: https://travis-ci.org/tenantcloud/emailer
