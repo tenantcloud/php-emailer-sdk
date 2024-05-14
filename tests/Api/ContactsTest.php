@@ -40,7 +40,7 @@ class ContactsTest extends TestCase
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
 		$emailerClient->contacts()->store($this->data);
 
-		/* @var Request $request */
+		/** @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 		$params = $this->mockHelper->parseRequest($request);
 
@@ -51,10 +51,10 @@ class ContactsTest extends TestCase
 	{
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
-			<<<'MM'
+			<<<'EOD'
 				Client error: `POST contacts` resulted in a `422 Unprocessable Entity` response:
 				{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
-				MM
+				EOD
 		);
 
 		$response = Message::parseResponse(file_get_contents($this->mockUrl . 'StoreContactEmailRequiredFailure.txt'));
@@ -71,7 +71,7 @@ class ContactsTest extends TestCase
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
 		$emailerClient->contacts()->update($id, $this->data);
 
-		/* @var Request $request */
+		/** @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 
 		self::assertEquals("contacts/{$id}", $request->getUri()->getPath());
@@ -81,10 +81,10 @@ class ContactsTest extends TestCase
 	{
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
-			<<<'MM'
+			<<<'EOD'
 				Client error: `PUT contacts/1` resulted in a `422 Unprocessable Entity` response:
 				{"message":"The given data was invalid.","errors":{"first_name":["The first name may not be greater than 30 characters." (truncated...)
-				MM
+				EOD
 		);
 
 		$id = 1;

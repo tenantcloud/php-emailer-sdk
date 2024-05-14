@@ -9,12 +9,7 @@ class Contact implements ContactContract
 {
 	private string $url = 'contact';
 
-	private Client $httpClient;
-
-	public function __construct(Client $httpClient)
-	{
-		$this->httpClient = $httpClient;
-	}
+	public function __construct(private Client $httpClient) {}
 
 	public function delete(array $data): void
 	{

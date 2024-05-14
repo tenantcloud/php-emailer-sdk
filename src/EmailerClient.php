@@ -26,7 +26,7 @@ class EmailerClient implements ClientContract
 {
 	private Client $client;
 
-	public function __construct(array $config, Client $client = null)
+	public function __construct(array $config, ?Client $client = null)
 	{
 		$url = Arr::get($config, 'url');
 		$accessToken = Arr::get($config, 'accessToken');

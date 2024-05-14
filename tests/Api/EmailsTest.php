@@ -40,7 +40,7 @@ class EmailsTest extends TestCase
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
 		$emailerClient->emails()->send($this->data);
 
-		/* @var Request $request */
+		/** @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 		$params = $this->mockHelper->parseRequest($request);
 
@@ -51,10 +51,10 @@ class EmailsTest extends TestCase
 	{
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
-			<<<'MM'
+			<<<'EOD'
 				Client error: `POST public/emails` resulted in a `422 Unprocessable Entity` response:
 				{"message":"The given data was invalid.","errors":{"receiver_email":["The receiver_email field is required."],"campaign_ (truncated...)
-				MM
+				EOD
 		);
 
 		$response = Message::parseResponse(file_get_contents('tests/Mock/Emails/SendEmailNotExistedContactFailure.txt'));
