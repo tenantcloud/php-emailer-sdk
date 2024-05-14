@@ -11,12 +11,7 @@ class Users implements UsersContract
 {
 	private string $url = 'public/users';
 
-	private Client $httpClient;
-
-	public function __construct(Client $httpClient)
-	{
-		$this->httpClient = $httpClient;
-	}
+	public function __construct(private Client $httpClient) {}
 
 	public function store(array $data): array
 	{

@@ -9,12 +9,7 @@ class Emails implements EmailsContract
 {
 	private string $url = 'public/emails';
 
-	private Client $httpClient;
-
-	public function __construct(Client $httpClient)
-	{
-		$this->httpClient = $httpClient;
-	}
+	public function __construct(private Client $httpClient) {}
 
 	public function send(array $data): void
 	{

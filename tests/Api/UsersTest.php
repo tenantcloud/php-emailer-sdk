@@ -40,7 +40,7 @@ class UsersTest extends TestCase
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
 		$response = $emailerClient->users()->store($this->data);
 
-		/* @var Request $request */
+		/** @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 		$params = $this->mockHelper->parseRequest($request);
 
@@ -57,10 +57,10 @@ class UsersTest extends TestCase
 	{
 		$this->expectException(RequestException::class);
 		$this->expectExceptionMessage(
-			<<<'MM'
+			<<<'EOD'
 				Client error: `POST public/users` resulted in a `422 Unprocessable Entity` response:
 				{"message":"The given data was invalid.","errors":{"email":["The email field is required."]}}
-				MM
+				EOD
 		);
 
 		$response = Message::parseResponse(file_get_contents('tests/Mock/Users/CreateUserValidationFailure.txt'));

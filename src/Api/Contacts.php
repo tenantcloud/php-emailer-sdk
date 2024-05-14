@@ -11,12 +11,7 @@ class Contacts implements ContactsContract
 {
 	private string $url = 'contacts';
 
-	private Client $httpClient;
-
-	public function __construct(Client $httpClient)
-	{
-		$this->httpClient = $httpClient;
-	}
+	public function __construct(private Client $httpClient) {}
 
 	public function store(array $data)
 	{

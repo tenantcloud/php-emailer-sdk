@@ -39,7 +39,7 @@ class CampaignsTest extends TestCase
 		$emailerClient = $this->mockHelper->makeEmailClientFromResponse($response, $this->history);
 		$emailerClient->campaigns()->store($this->data);
 
-		/* @var Request $request */
+		/** @var Request $request */
 		$request = Arr::get(Arr::first($this->history), 'request');
 		$params = $this->mockHelper->parseRequest($request);
 
