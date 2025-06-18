@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/tenantcloud/php-emailer-sdk/compare/v2.6.0...v2.6.1) (2025-06-18)
+
+
+### Bug Fixes
+
+* Allow Laravel 11 ([3c77fe1](https://github.com/tenantcloud/php-emailer-sdk/commit/3c77fe1cbb05cf57092061abb5f3f4a0c62c388f))
+
 # [2.6.0](https://github.com/tenantcloud/php-emailer-sdk/compare/v2.5.1...v2.6.0) (2024-04-25)
 
 
