@@ -5,8 +5,8 @@
 	"require": {
 		"php": ">=8.3",
 		"guzzlehttp/guzzle": "^7.2",
-		"illuminate/support": "^9.0|^10.0|^11.0",
-		"tenantcloud/guzzle-helper": "^1.1"
+		"illuminate/support": "^12.0",
+		"tenantcloud/guzzle-helper": "^2.0"
 	},
 	"require-dev": {
 		"pestphp/pest": "^3.8",
